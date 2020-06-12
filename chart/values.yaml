@@ -39,24 +39,28 @@ coreInitContainers: []
 #####################################################################
 # ---> EXAMPLE OF HOW TO SETUP initContainers for restore.
 #####################################################################
-#  - name: restore-from-file
-#    image: gcr.io/neo4j-k8s-marketplace-public/causal-cluster/restore:4.0
-#    imagePullPolicy: Always
-#    volumeMounts:
-#    - name: datadir
-#      mountPath: /data
-#    - name: restore-service-key
-#      mountPath: /auth
-#    env:
-#    - name: REMOTE_BACKUPSET
-#      value: gs://neo4j-database-backups/meetup-dataset-dirformat
-#    - name: BACKUP_SET_DIR
-#      value: meetup-dataset-backup
-#    - name: GOOGLE_APPLICATION_CREDENTIALS
-#      value: /auth/credentials.json
-#    # CAUTION: Read documentation before proceeding with this flag.
-#    - name: FORCE_OVERWRITE
-#      value: "true"
+  - name: restore-from-file
+    image: gcr.io/neo4j-k8s-marketplace-public/causal-cluster/restore:4.0
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: datadir
+      mountPath: /data
+    - name: restore-service-key
+      mountPath: /auth
+    env:
+    - name: REMOTE_BACKUPSET
+      value: gs://neo4j-backup-storage/my-data-2020-06-12-10:29:00.tar.gz
+    - name: BACKUP_SET_DIR
+      value: my-data
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: /auth/credentials.json
+    - name: NEO4J_dbms_allow__upgrade
+      value: "true"
+    - name: NEO4J_ACCEPT_LICENSE_AGREEMENT
+      value: "yes"
+    # CAUTION: Read documentation before proceeding with this flag.
+    - name: FORCE_OVERWRITE
+      value: "true"
 #####################################################################
 # EXAMPLE OF HOW TO SETUP initContainers for custom plugin install.
 # do not use this particular one, because APOC is already installed, it is
